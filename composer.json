@@ -1,0 +1,17 @@
+{
+    "name": "tms/theme-bundle",
+    "type": "symfony-bundle",
+    "description": "Theming support for a symfony2 application",
+    "keywords": ["themes", "twig", "assets", "translations"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "TESSI MARKETING",
+            "email": "contact@tessi.fr",
+            "homepage": "http://www.tessi.fr"
+        }
+    ],
+    "autoload": {
+        "psr-4": { "Tms\\Bundle\\ThemeBundle\\": "" }
+    }
+}

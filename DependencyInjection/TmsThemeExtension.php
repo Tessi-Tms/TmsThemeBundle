@@ -5,9 +5,13 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
+use Tms\Bundle\ThemeBundle\Model\Theme;
+use Tms\Bundle\ThemeBundle\Theme\ThemeRegistry;
 
 class TmsThemeExtension extends Extension
 {
+
+
     /**
      * {@inheritdoc}
      */
@@ -18,5 +22,11 @@ class TmsThemeExtension extends Extension
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
+
+        // Register the themes from configuration
+        $themeRegistry = $container->getDefinition(ThemeRegistry::class);
+        foreach($config['themes'] as $id => $theme) {
+            $themeRegistry->addMethodCall('setTheme', array($id, $theme));
+        }
     }
 }

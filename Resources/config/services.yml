@@ -1,2 +1,11 @@
 services:
     Tms\Bundle\ThemeBundle\Theme\ThemeRegistry: ~
+
+    Tms\Bundle\ThemeBundle\Helper\ThemeHelper:
+        arguments:
+            $themeRegistry: '@Tms\Bundle\ThemeBundle\Theme\ThemeRegistry'
+
+# Alias
+    tms_theme.helper:
+        alias: Tms\Bundle\ThemeBundle\Helper\ThemeHelper
+        public: true

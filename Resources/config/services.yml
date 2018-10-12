@@ -5,6 +5,10 @@ services:
         arguments:
             $themeRegistry: '@Tms\Bundle\ThemeBundle\Theme\ThemeRegistry'
 
+    Tms\Bundle\ThemeBundle\Twig\ThemeExtension:
+        tags:
+            - { name: twig.extension }
+
     Tms\Bundle\ThemeBundle\Twig\ThemeLoader:
         arguments:
             $bundles: '%kernel.bundles%'

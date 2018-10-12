@@ -5,6 +5,13 @@ services:
         arguments:
             $themeRegistry: '@Tms\Bundle\ThemeBundle\Theme\ThemeRegistry'
 
+    Tms\Bundle\ThemeBundle\Twig\ThemeLoader:
+        arguments:
+            $rootPath: '%kernel.root_dir%/..'
+            $themeHelper : '@Tms\Bundle\ThemeBundle\Helper\ThemeHelper'
+        tags:
+            - { name: twig.loader, priority: 50 }
+
 # Alias
     tms_theme.helper:
         alias: Tms\Bundle\ThemeBundle\Helper\ThemeHelper

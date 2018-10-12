@@ -7,6 +7,13 @@ use Tms\Bundle\ThemeBundle\Theme\ThemeInterface;
 class ThemeLoader implements \Twig_LoaderInterface, \Twig_ExistsLoaderInterface, \Twig_SourceContextLoaderInterface
 {
     /**
+     * Paths of all the available bundles.
+     *
+     * @var array
+     */
+    protected $bundles;
+
+    /**
      * Cache the path of the already found templates.
      *
      * @var array
@@ -30,11 +37,13 @@ class ThemeLoader implements \Twig_LoaderInterface, \Twig_ExistsLoaderInterface,
     /**
      * Constructor.
      *
-     * @param string      $rootPath    The root path common to all relative paths.
+     * @param array       $bundles     Paths of all the available bundles
+     * @param string      $rootPath    The root path common to all relative paths
      * @param ThemeHelper $themeHelper Instance of $themeHelper
      */
-    public function __construct($rootPath, ThemeHelper $themeHelper)
+    public function __construct(array $bundles, $rootPath, ThemeHelper $themeHelper)
     {
+        $this->bundles = $bundles;
         $this->cache = array();
         $this->rootPath = $rootPath;
         $this->themeHelper = $themeHelper;
@@ -228,6 +237,40 @@ class ThemeLoader implements \Twig_LoaderInterface, \Twig_ExistsLoaderInterface,
 
             if (null !== $theme->getParent()) {
                 $path = $this->findTemplate($theme->getParent(), $parentName);
+            }
+
+        // Handle '@' notation for bundle templates
+        } elseif (isset($name[0]) && '@' == $name[0] && $pos = strpos($name, '/')) {
+            $bundle = sprintf('%sBundle', substr($name, 1, $pos - 1));
+            $template = substr($name, $pos + 1);
+
+            // The namespace is a bundle name
+            if (isset($this->bundles[$bundle])) {
+                $rc = new \ReflectionClass($this->bundles[$bundle]);
+
+                $path = sprintf('%s/Resources/themes/%s/views/%s',
+                    dirname($rc->getFileName()),
+                    $theme->getId(),
+                    $template
+                );
+            }
+
+        // Handle '::' notation for bundles templates
+        } elseif (preg_match('/^[^:]+Bundle:[^:]*:[^:]+$/', $name)) {
+            list($bundle, $controller, $template) = explode(':', $name);
+            if ($controller) {
+                $template = sprintf('%s/%s', $controller, $template);
+            }
+
+            // The bundle is found
+            if (isset($this->bundles[$bundle])) {
+                $rc = new \ReflectionClass($this->bundles[$bundle]);
+
+                $path = sprintf('%s/Resources/themes/%s/views/%s',
+                    dirname($rc->getFileName()),
+                    $theme->getId(),
+                    $template
+                );
             }
         }
 

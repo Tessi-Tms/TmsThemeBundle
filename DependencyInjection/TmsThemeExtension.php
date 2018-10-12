@@ -10,8 +10,6 @@ use Tms\Bundle\ThemeBundle\Theme\ThemeRegistry;
 
 class TmsThemeExtension extends Extension
 {
-
-
     /**
      * {@inheritdoc}
      */
@@ -26,6 +24,9 @@ class TmsThemeExtension extends Extension
         // Register the themes from configuration
         $themeRegistry = $container->getDefinition(ThemeRegistry::class);
         foreach($config['themes'] as $id => $theme) {
+            // Ignore outdated configuration
+            unset($theme['bundles']);
+
             $themeRegistry->addMethodCall('setTheme', array($id, $theme));
         }
     }

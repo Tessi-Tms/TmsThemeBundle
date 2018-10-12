@@ -20,13 +20,6 @@ class Theme implements ThemeInterface
     protected $name;
 
     /**
-     * Bundles where this theme is available
-     *
-     * @var array<string>
-     */
-    protected $bundles;
-
-    /**
      * The theme parent
      *
      * @var Theme
@@ -42,7 +35,6 @@ class Theme implements ThemeInterface
     {
         $this->id = isset($data['id']) ? $data['id'] : null;
         $this->name = isset($data['name']) ? $data['name'] : null;
-        $this->bundles = (isset($data['bundles']) && is_array($data['bundles'])) ? $data['bundles'] : null;;
         $this->parent = (isset($data['parent']) && $data['parent'] instanceof ThemeInterface) ? $data['parent'] : null;
     }
 
@@ -86,28 +78,6 @@ class Theme implements ThemeInterface
     public function setName($value)
     {
         $this->name = $value;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBundles()
-    {
-        return $this->bundles ? $this->bundles : array();
-    }
-
-    /**
-     * Set the value of Bundles where this theme is available
-     *
-     * @param array bundles
-     *
-     * @return Theme
-     */
-    public function setBundles(array $value)
-    {
-        $this->bundles = $value;
 
         return $this;
     }

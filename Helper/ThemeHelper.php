@@ -33,6 +33,16 @@ class ThemeHelper
     }
 
     /**
+     * Return all the available themes.
+     *
+     * @return array<ThemeInterface>
+     */
+    public function getThemes()
+    {
+        return $this->themeRegistry->getThemes();
+    }
+
+    /**
      * Set the active theme.
      *
      * @param mixed $theme An instance of ThemeInterface or an identifier

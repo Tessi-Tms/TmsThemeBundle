@@ -1,5 +1,6 @@
 services:
     Tms\Bundle\ThemeBundle\Theme\ThemeRegistry: ~
+    Tms\Bundle\ThemeBundle\Translation\ThemeTranslator: ~
 
     Tms\Bundle\ThemeBundle\Helper\ThemeHelper:
         arguments:

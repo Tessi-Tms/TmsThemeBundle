@@ -6,7 +6,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 use Tms\Bundle\ThemeBundle\Model\Theme;
-use Tms\Bundle\ThemeBundle\Theme\ThemeRegistry;
 
 class TmsThemeExtension extends Extension
 {
@@ -21,13 +20,13 @@ class TmsThemeExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
 
-        // Register the themes from configuration
-        $themeRegistry = $container->getDefinition(ThemeRegistry::class);
+        // Ignore outdated configuration
+        $themes = array();
         foreach($config['themes'] as $id => $theme) {
-            // Ignore outdated configuration
             unset($theme['bundles']);
 
-            $themeRegistry->addMethodCall('setTheme', array($id, $theme));
+            $themes[$id] = $theme;
         }
+        $container->setParameter('tms.themes.all', $themes);
     }
 }

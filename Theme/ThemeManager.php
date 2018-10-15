@@ -1,18 +1,16 @@
 <?php
-namespace Tms\Bundle\ThemeBundle\Helper;
+namespace Tms\Bundle\ThemeBundle\Theme;
 
 use Tms\Bundle\ThemeBundle\Exception\ThemeNotFoundException;
-use Tms\Bundle\ThemeBundle\Theme\ThemeInterface;
-use Tms\Bundle\ThemeBundle\Theme\ThemeRegistry;
 
-class ThemeHelper
+class ThemeManager
 {
     /**
      * Instance of ThemeInterface.
      *
      * @var ThemeInterface
      */
-    protected $activeTheme;
+    protected $currentTheme;
 
     /**
      * Instance of ThemeRegistry.
@@ -28,7 +26,7 @@ class ThemeHelper
      */
     public function __construct(ThemeRegistry $themeRegistry)
     {
-        $this->activeTheme = null;
+        $this->currentTheme = null;
         $this->themeRegistry = $themeRegistry;
     }
 
@@ -43,7 +41,7 @@ class ThemeHelper
     }
 
     /**
-     * Set the active theme.
+     * Set the current theme.
      *
      * @param mixed $theme An instance of ThemeInterface or an identifier
      *
@@ -54,7 +52,7 @@ class ThemeHelper
     {
         // Reset active theme on null
         if (is_null($theme)) {
-            $this->activeTheme = null;
+            $this->currentTheme = null;
 
             return;
         }
@@ -69,7 +67,7 @@ class ThemeHelper
             throw new \InvalidArgumentException("The theme must be an instance of ThemeInterface or an string", 1);
         }
 
-        $this->activeTheme = $theme;
+        $this->currentTheme = $theme;
     }
 
     /**
@@ -77,8 +75,8 @@ class ThemeHelper
      *
      * @return ThemeInterface|null
      */
-    public function getActiveTheme()
+    public function getCurrentTheme()
     {
-        return $this->activeTheme;
+        return $this->currentTheme;
     }
 }

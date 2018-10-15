@@ -2,7 +2,7 @@
 namespace Tms\Bundle\ThemeBundle\Translation;
 
 use Symfony\Bundle\FrameworkBundle\Translation\Translator;
-use Tms\Bundle\ThemeBundle\Helper\ThemeHelper;
+use Tms\Bundle\ThemeBundle\Theme\ThemeManager;
 
 class ThemeTranslator extends Translator
 {
@@ -21,11 +21,11 @@ class ThemeTranslator extends Translator
     protected $rootPath;
 
     /**
-     * Instance of ThemeHelper.
+     * Instance of ThemeManager.
      *
-     * @var ThemeHelper
+     * @var ThemeManager
      */
-    protected $themeHelper;
+    protected $themeManager;
 
     /**
      * Set the registered bundles.
@@ -68,13 +68,13 @@ class ThemeTranslator extends Translator
     }
 
     /**
-     * Set the ThemeHelper.
+     * Set the ThemeManager.
      *
-     * @param ThemeHelper $theme Instance of ThemeHelper
+     * @param ThemeManager $theme Instance of ThemeManager
      */
-    public function setThemeHelper(ThemeHelper $themeHelper)
+    public function setThemeManager(ThemeManager $themeManager)
     {
-        $this->themeHelper = $themeHelper;
+        $this->themeManager = $themeManager;
     }
 
     /**
@@ -90,7 +90,7 @@ class ThemeTranslator extends Translator
         // Default values
         $domain = (null === $domain) ? 'messages' : $domain;
         $locale = (null === $locale) ? $this->getLocale(): $locale;
-        $theme = $this->themeHelper->getActiveTheme();
+        $theme = $this->themeManager->getCurrentTheme();
 
         // Use default behavior without theme
         if (null === $theme) {
@@ -147,7 +147,7 @@ class ThemeTranslator extends Translator
         );
 
         // Add the themes translations resources
-        $themes = $this->themeHelper->getThemes();
+        $themes = $this->themeManager->getThemes();
         $paths = $this->getBundlesPath();
         $paths[] = sprintf('%s/app', $this->rootPath);
         foreach ($themes as $id => $theme) {

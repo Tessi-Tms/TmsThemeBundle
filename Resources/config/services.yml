@@ -2,7 +2,7 @@ services:
     Tms\Bundle\ThemeBundle\Theme\ThemeRegistry: ~
     Tms\Bundle\ThemeBundle\Translation\ThemeTranslator: ~
 
-    Tms\Bundle\ThemeBundle\Helper\ThemeHelper:
+    Tms\Bundle\ThemeBundle\Theme\ThemeManager:
         arguments:
             $themeRegistry: '@Tms\Bundle\ThemeBundle\Theme\ThemeRegistry'
 
@@ -14,11 +14,11 @@ services:
         arguments:
             $bundles: '%kernel.bundles%'
             $rootPath: '%kernel.root_dir%/..'
-            $themeHelper : '@Tms\Bundle\ThemeBundle\Helper\ThemeHelper'
+            $themeManager : '@Tms\Bundle\ThemeBundle\Theme\ThemeManager'
         tags:
             - { name: twig.loader, priority: 50 }
 
 # Alias
     tms_theme.helper:
-        alias: Tms\Bundle\ThemeBundle\Helper\ThemeHelper
+        alias: Tms\Bundle\ThemeBundle\Theme\ThemeManager
         public: true

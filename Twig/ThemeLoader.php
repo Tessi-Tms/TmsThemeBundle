@@ -1,7 +1,7 @@
 <?php
 namespace Tms\Bundle\ThemeBundle\Twig;
 
-use Tms\Bundle\ThemeBundle\Helper\ThemeHelper;
+use Tms\Bundle\ThemeBundle\Theme\ThemeManager;
 use Tms\Bundle\ThemeBundle\Theme\ThemeInterface;
 
 class ThemeLoader implements \Twig_LoaderInterface, \Twig_ExistsLoaderInterface, \Twig_SourceContextLoaderInterface
@@ -21,11 +21,11 @@ class ThemeLoader implements \Twig_LoaderInterface, \Twig_ExistsLoaderInterface,
     protected $cache;
 
     /**
-     * Instance of ThemeHelper.
+     * Instance of ThemeManager.
      *
-     * @var ThemeHelper
+     * @var ThemeManager
      */
-    protected $themeHelper;
+    protected $themeManager;
 
     /**
      * The root path common to all relative paths.
@@ -39,14 +39,14 @@ class ThemeLoader implements \Twig_LoaderInterface, \Twig_ExistsLoaderInterface,
      *
      * @param array       $bundles     Paths of all the available bundles
      * @param string      $rootPath    The root path common to all relative paths
-     * @param ThemeHelper $themeHelper Instance of $themeHelper
+     * @param ThemeManager $themeManager Instance of $themeManager
      */
-    public function __construct(array $bundles, $rootPath, ThemeHelper $themeHelper)
+    public function __construct(array $bundles, $rootPath, ThemeManager $themeManager)
     {
         $this->bundles = $bundles;
         $this->cache = array();
         $this->rootPath = $rootPath;
-        $this->themeHelper = $themeHelper;
+        $this->themeManager = $themeManager;
     }
 
     /**
@@ -55,7 +55,7 @@ class ThemeLoader implements \Twig_LoaderInterface, \Twig_ExistsLoaderInterface,
     public function getSource($name)
     {
         // Retrieve the current theme
-        $theme = $this->themeHelper->getActiveTheme();
+        $theme = $this->themeManager->getCurrentTheme();
 
         // Ignore when the theme is disabled
         if (null === $theme) {
@@ -77,7 +77,7 @@ class ThemeLoader implements \Twig_LoaderInterface, \Twig_ExistsLoaderInterface,
     public function getSourceContext($name)
     {
         // Retrieve the current theme
-        $theme = $this->themeHelper->getActiveTheme();
+        $theme = $this->themeManager->getCurrentTheme();
 
         // Ignore when the theme is disabled
         if (null === $theme) {
@@ -99,7 +99,7 @@ class ThemeLoader implements \Twig_LoaderInterface, \Twig_ExistsLoaderInterface,
     public function exists($name)
     {
         // Retrieve the current theme
-        $theme = $this->themeHelper->getActiveTheme();
+        $theme = $this->themeManager->getCurrentTheme();
 
         // Ignore when the theme is disabled
         if (null === $theme) {
@@ -122,7 +122,7 @@ class ThemeLoader implements \Twig_LoaderInterface, \Twig_ExistsLoaderInterface,
     public function getCacheKey($name)
     {
         // Retrieve the current theme
-        $theme = $this->themeHelper->getActiveTheme();
+        $theme = $this->themeManager->getCurrentTheme();
 
         // Ignore when the theme is disabled
         if (null === $theme) {
@@ -148,7 +148,7 @@ class ThemeLoader implements \Twig_LoaderInterface, \Twig_ExistsLoaderInterface,
     public function isFresh($name, $time)
     {
         // Retrieve the current theme
-        $theme = $this->themeHelper->getActiveTheme();
+        $theme = $this->themeManager->getCurrentTheme();
 
         // Ignore when the theme is disabled
         if (null === $theme) {

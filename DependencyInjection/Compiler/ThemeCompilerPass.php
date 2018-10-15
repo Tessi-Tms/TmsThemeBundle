@@ -6,7 +6,7 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Reference;
 use Tms\Bundle\ThemeBundle\Theme\ThemeRegistry;
 use Tms\Bundle\ThemeBundle\Translation\ThemeTranslator;
-use Tms\Bundle\ThemeBundle\Helper\ThemeHelper;
+use Tms\Bundle\ThemeBundle\Theme\ThemeManager;
 
 class ThemeCompilerPass implements CompilerPassInterface
 {
@@ -28,7 +28,7 @@ class ThemeCompilerPass implements CompilerPassInterface
                 ->setClass(ThemeTranslator::class)
                 ->addMethodCall('setBundles', array($container->getParameter('kernel.bundles')))
                 ->addMethodCall('setRootPath', array(sprintf('%s/..', $container->getParameter('kernel.root_dir'))))
-                ->addMethodCall('setThemeHelper', array(new Reference(ThemeHelper::class)))
+                ->addMethodCall('setThemeManager', array(new Reference(ThemeManager::class)))
             ;
         }
     }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Tms\Bundle\ThemeBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -21,13 +22,14 @@ class ThemeController extends Controller
      *
      * @return string
      */
-    protected function getMimeType($filename) {
+    protected function getMimeType($filename)
+    {
         // Known extension types
         $types = array(
-            'css' => 'text/css'
+            'css' => 'text/css',
         );
 
-        $ext = strtolower(preg_replace('/^.*[.]([^.]+)$/', "$1", $filename));
+        $ext = strtolower(preg_replace('/^.*[.]([^.]+)$/', '$1', $filename));
         if (isset($types[$ext])) {
             return $types[$ext];
         }
@@ -47,8 +49,8 @@ class ThemeController extends Controller
      *     "asset" = "^[a-zA-Z1-9/.-]+$"
      * },)
      *
-     * @param  Request        $request Instance of Request
-     * @param  ThemeInterface $theme  Instance of ModuleInterface
+     * @param Request        $request Instance of Request
+     * @param ThemeInterface $theme   Instance of ModuleInterface
      *
      * @return Response
      */

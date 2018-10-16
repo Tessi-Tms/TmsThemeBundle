@@ -1,11 +1,11 @@
 <?php
+
 namespace Tms\Bundle\ThemeBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
-use Tms\Bundle\ThemeBundle\Model\Theme;
 
 class TmsThemeExtension extends Extension
 {
@@ -22,7 +22,7 @@ class TmsThemeExtension extends Extension
 
         // Ignore outdated configuration
         $themes = array();
-        foreach($config['themes'] as $id => $theme) {
+        foreach ($config['themes'] as $id => $theme) {
             unset($theme['bundles']);
 
             $themes[$id] = $theme;

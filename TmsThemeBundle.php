@@ -1,4 +1,5 @@
 <?php
+
 namespace Tms\Bundle\ThemeBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -8,7 +9,7 @@ use Tms\Bundle\ThemeBundle\DependencyInjection\Compiler\ThemeCompilerPass;
 class TmsThemeBundle extends Bundle
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function build(ContainerBuilder $container)
     {

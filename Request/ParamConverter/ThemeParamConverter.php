@@ -1,4 +1,5 @@
 <?php
+
 namespace Tms\Bundle\ThemeBundle\Request\ParamConverter;
 
 use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
@@ -29,7 +30,7 @@ class ThemeParamConverter implements ParamConverterInterface
     /**
      * {@inheritdoc}
      */
-    function apply(Request $request, ParamConverter $configuration)
+    public function apply(Request $request, ParamConverter $configuration)
     {
         $param = $configuration->getName();
         if (!$request->attributes->has($param)) {
@@ -51,7 +52,7 @@ class ThemeParamConverter implements ParamConverterInterface
     /**
      * {@inheritdoc}
      */
-    function supports(ParamConverter $configuration)
+    public function supports(ParamConverter $configuration)
     {
         if (null === $configuration->getClass()) {
             return false;

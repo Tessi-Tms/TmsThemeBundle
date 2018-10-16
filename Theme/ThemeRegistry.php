@@ -1,4 +1,5 @@
 <?php
+
 namespace Tms\Bundle\ThemeBundle\Theme;
 
 use Tms\Bundle\ThemeBundle\Exception\ThemeNotFoundException;
@@ -50,7 +51,7 @@ class ThemeRegistry implements ThemeRegistryInterface
                 if (isset($theme['parent'])) {
                     $theme['parent'] = $this->getTheme($theme['parent']);
                 }
-            } catch(ThemeNotFoundException $e) {
+            } catch (ThemeNotFoundException $e) {
                 throw new \InvalidArgumentException(sprintf(
                     "The parent theme '%s' must be registered before the '%s' theme.",
                     $theme['parent'],
@@ -62,7 +63,7 @@ class ThemeRegistry implements ThemeRegistryInterface
             $theme = $rc->newInstance($theme);
         }
 
-        if (! ($theme instanceof ThemeInterface)) {
+        if (!($theme instanceof ThemeInterface)) {
             throw new \InvalidArgumentException(sprintf(
                 "The theme '%s' must be an instance of ThemeInterface or an array",
                 $id

@@ -1,4 +1,5 @@
 <?php
+
 namespace Tms\Bundle\ThemeBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -11,13 +12,13 @@ use Tms\Bundle\ThemeBundle\Theme\ThemeManager;
 class ThemeCompilerPass implements CompilerPassInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function process(ContainerBuilder $container)
     {
         // Register the themes from configuration
         $themeRegistry = $container->getDefinition(ThemeRegistry::class);
-        foreach($container->getParameter('tms.themes.all') as $id => $theme) {
+        foreach ($container->getParameter('tms.themes.all') as $id => $theme) {
             $themeRegistry->addMethodCall('setTheme', array($id, $theme));
         }
 

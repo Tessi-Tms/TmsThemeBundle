@@ -1,9 +1,9 @@
 <?php
+
 namespace Tms\Bundle\ThemeBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
@@ -48,7 +48,7 @@ EOT
         }
 
         // Remove old assets
-        $output->writeln("Removing outdated themes assets");
+        $output->writeln('Removing outdated themes assets');
         $target = sprintf('%s/themes', $targetDirectory);
         $this
             ->getContainer()
@@ -65,7 +65,7 @@ EOT
     }
 
     /**
-     * Install all the assets for a theme
+     * Install all the assets for a theme.
      *
      * @param InputInterface  $input  Instance of InputInterface
      * @param OutputInterface $output Instance of OutputInterface

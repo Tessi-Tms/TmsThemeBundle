@@ -1,4 +1,5 @@
 <?php
+
 namespace Tms\Bundle\ThemeBundle\Theme;
 
 use Tms\Bundle\ThemeBundle\Exception\ThemeNotFoundException;
@@ -17,7 +18,7 @@ interface ThemeRegistryInterface
     public function setTheme($id, $theme);
 
     /**
-     * Get the value of the available themes
+     * Get the value of the available themes.
      *
      * @return array<ThemeInterface>
      */
@@ -39,7 +40,7 @@ interface ThemeRegistryInterface
      *
      * @param $id The theme identifier
      *
-     * @return boolean
+     * @return bool
      */
     public function hasTheme($id);
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Tms\Bundle\ThemeBundle\Twig;
 
 use Tms\Bundle\ThemeBundle\Theme\ThemeManager;
@@ -37,8 +38,8 @@ class ThemeLoader implements \Twig_LoaderInterface, \Twig_ExistsLoaderInterface,
     /**
      * Constructor.
      *
-     * @param array       $bundles     Paths of all the available bundles
-     * @param string      $rootPath    The root path common to all relative paths
+     * @param array        $bundles      Paths of all the available bundles
+     * @param string       $rootPath     The root path common to all relative paths
      * @param ThemeManager $themeManager Instance of $themeManager
      */
     public function __construct(array $bundles, $rootPath, ThemeManager $themeManager)
@@ -176,7 +177,7 @@ class ThemeLoader implements \Twig_LoaderInterface, \Twig_ExistsLoaderInterface,
     /**
      * Validate the template name.
      *
-     * @param  string $name The name of the template to validate
+     * @param string $name The name of the template to validate
      *
      * @throws \Twig_Error_Loader
      */
@@ -212,7 +213,7 @@ class ThemeLoader implements \Twig_LoaderInterface, \Twig_ExistsLoaderInterface,
      * @param ThemeInterface $theme Instance of ThemeInterface
      * @param string         $name  The name of the template to find
      *
-     * @return string|boolean
+     * @return string|bool
      *
      * @throws \Twig_Error_Loader
      */
@@ -231,7 +232,7 @@ class ThemeLoader implements \Twig_LoaderInterface, \Twig_ExistsLoaderInterface,
         $path = sprintf('%s/app/Resources/themes/%s/views/%s', $this->rootPath, $theme->getId(), $name);
 
         // Force parent template
-        if (preg_match('/^#parent#/', $name)){
+        if (preg_match('/^#parent#/', $name)) {
             $parentName = preg_replace('/^#parent#/', '', $name);
             $path = sprintf('%s/app/Resources/views/%s', $this->rootPath, $parentName);
 
@@ -278,7 +279,7 @@ class ThemeLoader implements \Twig_LoaderInterface, \Twig_ExistsLoaderInterface,
         // Check if the template file exists
         if (!file_exists($path)) {
             // Search in the parent theme
-            if (null === $theme->getParent()){
+            if (null === $theme->getParent()) {
                 throw new \Twig_Error_Loader(sprintf(
                     'Unable to find template "%s" for the %s theme.',
                     $name,

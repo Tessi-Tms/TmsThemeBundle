@@ -1,4 +1,5 @@
 <?php
+
 namespace Tms\Bundle\ThemeBundle\Model;
 
 use Tms\Bundle\ThemeBundle\Theme\ThemeInterface;
@@ -6,21 +7,21 @@ use Tms\Bundle\ThemeBundle\Theme\ThemeInterface;
 class Theme implements ThemeInterface
 {
     /**
-     * Theme identifier
+     * Theme identifier.
      *
      * @var string
      */
     protected $id;
 
     /**
-     * The theme name
+     * The theme name.
      *
      * @var string
      */
     protected $name;
 
     /**
-     * The theme parent
+     * The theme parent.
      *
      * @var Theme
      */
@@ -29,7 +30,7 @@ class Theme implements ThemeInterface
     /**
      * Contructor.
      *
-     * @param array $data The themes properties.
+     * @param array $data the themes properties
      */
     public function __construct(array $data = array())
     {
@@ -47,7 +48,7 @@ class Theme implements ThemeInterface
     }
 
     /**
-     * Set the value of Theme identifier
+     * Set the value of Theme identifier.
      *
      * @param string id
      *
@@ -69,7 +70,7 @@ class Theme implements ThemeInterface
     }
 
     /**
-     * Set the value of The theme name
+     * Set the value of The theme name.
      *
      * @param string name
      *
@@ -83,7 +84,7 @@ class Theme implements ThemeInterface
     }
 
     /**
-     * Add a new bundle to the theme
+     * Add a new bundle to the theme.
      *
      * @param string The bundle name
      * @param string The bundle path
@@ -106,7 +107,7 @@ class Theme implements ThemeInterface
     }
 
     /**
-     * Set the value of The theme parent
+     * Set the value of The theme parent.
      *
      * @param Theme parent
      *

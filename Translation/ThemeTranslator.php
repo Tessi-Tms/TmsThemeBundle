@@ -1,4 +1,5 @@
 <?php
+
 namespace Tms\Bundle\ThemeBundle\Translation;
 
 use Symfony\Bundle\FrameworkBundle\Translation\Translator;
@@ -30,7 +31,7 @@ class ThemeTranslator extends Translator
     /**
      * Set the registered bundles.
      *
-     * @param array $bundles Registered bundles.
+     * @param array $bundles registered bundles
      */
     public function setBundles(array $bundles)
     {
@@ -60,7 +61,7 @@ class ThemeTranslator extends Translator
     /**
      * Set the the root path common to all relative paths.
      *
-     * @param string $rootPath The root path.
+     * @param string $rootPath the root path
      */
     public function setRootPath($rootPath)
     {
@@ -80,16 +81,17 @@ class ThemeTranslator extends Translator
     /**
      * Get the translation theme domain or his parent if the translation was not found.
      *
-     * @param  string $id     Translation identifier
-     * @param  string $domain Translation domain
-     * @param  string $locale User locale
+     * @param string $id     Translation identifier
+     * @param string $domain Translation domain
+     * @param string $locale User locale
+     *
      * @return string
      */
     protected function getDomain($id, $domain = null, $locale = null)
     {
         // Default values
         $domain = (null === $domain) ? 'messages' : $domain;
-        $locale = (null === $locale) ? $this->getLocale(): $locale;
+        $locale = (null === $locale) ? $this->getLocale() : $locale;
         $theme = $this->themeManager->getCurrentTheme();
 
         // Use default behavior without theme
@@ -165,10 +167,10 @@ class ThemeTranslator extends Translator
                         }
 
                         // Parse the filename
-                        $domain = sprintf('%s.%s', $theme->getId(), preg_replace($regex, "$1", $file));
-                        $locale = preg_replace($regex, "$2", $file);
-                        $format = $formats[preg_replace($regex, "$3", $file)];
-                        
+                        $domain = sprintf('%s.%s', $theme->getId(), preg_replace($regex, '$1', $file));
+                        $locale = preg_replace($regex, '$2', $file);
+                        $format = $formats[preg_replace($regex, '$3', $file)];
+
                         // Add the translations files to the translator
                         $translationsFile = sprintf('%s/%s', $translationsPath, $file);
                         $this->addResource($format, $translationsFile, $locale, $theme->getId());

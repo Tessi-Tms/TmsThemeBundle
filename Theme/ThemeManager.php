@@ -1,4 +1,5 @@
 <?php
+
 namespace Tms\Bundle\ThemeBundle\Theme;
 
 use Tms\Bundle\ThemeBundle\Exception\ThemeNotFoundException;
@@ -58,13 +59,12 @@ class ThemeManager
         }
 
         // Retrieve the theme from his id
-        if(is_string($theme))
-        {
+        if (is_string($theme)) {
             $theme = $this->themeRegistry->getTheme($theme);
         }
 
-        if (! ($theme instanceof ThemeInterface)) {
-            throw new \InvalidArgumentException("The theme must be an instance of ThemeInterface or an string", 1);
+        if (!($theme instanceof ThemeInterface)) {
+            throw new \InvalidArgumentException('The theme must be an instance of ThemeInterface or an string', 1);
         }
 
         $this->currentTheme = $theme;

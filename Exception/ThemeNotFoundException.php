@@ -1,4 +1,5 @@
 <?php
+
 namespace Tms\Bundle\ThemeBundle\Exception;
 
 class ThemeNotFoundException extends \Exception

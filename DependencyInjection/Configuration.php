@@ -21,7 +21,9 @@ class Configuration implements ConfigurationInterface
                     ->useAttributeAsKey('id')
                     ->arrayPrototype()
                         ->beforeNormalization()
-                            ->ifString()->then(function ($value) { return array('name' => $value); })
+                            ->ifString()->then(function ($value) {
+                                return array('name' => $value);
+                            })
                         ->end()
                         ->children()
                             ->scalarNode('id')->end()

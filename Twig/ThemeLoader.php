@@ -268,7 +268,8 @@ class ThemeLoader implements \Twig_LoaderInterface, \Twig_ExistsLoaderInterface,
             if (isset($this->bundles[$bundle])) {
                 $rc = new \ReflectionClass($this->bundles[$bundle]);
 
-                $path = sprintf('%s/Resources/themes/%s/views/%s',
+                $path = sprintf(
+                    '%s/Resources/themes/%s/views/%s',
                     dirname($rc->getFileName()),
                     $theme->getId(),
                     $template

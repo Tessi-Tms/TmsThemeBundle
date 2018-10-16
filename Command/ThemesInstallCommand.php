@@ -42,11 +42,6 @@ EOT
             throw new \InvalidArgumentException(sprintf('The target directory "%s" does not exist.', $mainDirectory));
         }
 
-        // Check the symlink option
-        if (!function_exists('symlink') && $input->getOption('symlink')) {
-            throw new \InvalidArgumentException('The symlink() function is not available on your system. You need to install the assets without the --symlink option.');
-        }
-
         // Remove old assets
         $output->writeln('Removing outdated themes assets');
         $target = sprintf('%s/themes', $targetDirectory);

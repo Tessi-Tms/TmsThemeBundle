@@ -7,6 +7,9 @@ services:
             $themeRegistry: '@Tms\Bundle\ThemeBundle\Theme\ThemeRegistry'
 
     Tms\Bundle\ThemeBundle\Twig\ThemeExtension:
+        arguments:
+            $router: '@router'
+            $themeManager : '@Tms\Bundle\ThemeBundle\Theme\ThemeManager'
         tags:
             - { name: twig.extension }
 
@@ -17,6 +20,12 @@ services:
             $themeManager : '@Tms\Bundle\ThemeBundle\Theme\ThemeManager'
         tags:
             - { name: twig.loader, priority: 50 }
+
+    Tms\Bundle\ThemeBundle\Request\ParamConverter\ThemeParamConverter:
+        arguments:
+            $themeRegistry: '@Tms\Bundle\ThemeBundle\Theme\ThemeRegistry'
+        tags:
+            - { name: request.param_converter, priority: -2, converter: theme_converter }
 
 # Alias
     tms_theme.helper:

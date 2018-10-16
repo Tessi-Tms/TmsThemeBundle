@@ -1,0 +1,3 @@
+tms.theme:
+    resource: "@TmsThemeBundle/Controller/"
+    type:     annotation

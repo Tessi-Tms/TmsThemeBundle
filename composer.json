@@ -11,6 +11,9 @@
             "homepage": "http://www.tessi.fr"
         }
     ],
+    "require": {
+        "symfony/framework-bundle": "~2.7|~3.3"
+    },
     "autoload": {
         "psr-4": { "Tms\\Bundle\\ThemeBundle\\": "" }
     }

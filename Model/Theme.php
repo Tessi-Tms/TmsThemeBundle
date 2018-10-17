@@ -84,21 +84,6 @@ class Theme implements ThemeInterface
     }
 
     /**
-     * Add a new bundle to the theme.
-     *
-     * @param string The bundle name
-     * @param string The bundle path
-     *
-     * @return Theme
-     */
-    public function addBundle($name, $path)
-    {
-        $this->bundles[$name] = $path;
-
-        return $this;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getParent()

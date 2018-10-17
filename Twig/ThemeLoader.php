@@ -65,9 +65,6 @@ class ThemeLoader implements \Twig_LoaderInterface, \Twig_ExistsLoaderInterface,
 
         // Search for the template file.
         $path = $this->findTemplate($theme, $name);
-        if (false === $path) {
-            throw new \Twig_Error_Loader($name);
-        }
 
         return file_get_contents($path);
     }
@@ -87,9 +84,6 @@ class ThemeLoader implements \Twig_LoaderInterface, \Twig_ExistsLoaderInterface,
 
         // Search for the template file.
         $path = $this->findTemplate($theme, $name);
-        if (false === $path) {
-            throw new \Twig_Error_Loader($name);
-        }
 
         return new \Twig_Source(file_get_contents($path), $name, $path);
     }
@@ -132,9 +126,6 @@ class ThemeLoader implements \Twig_LoaderInterface, \Twig_ExistsLoaderInterface,
 
         // Search for the template file.
         $path = $this->findTemplate($theme, $name);
-        if (false === $path) {
-            throw new \Twig_Error_Loader($name);
-        }
 
         return sprintf(
             '#%s:%s',
@@ -153,7 +144,7 @@ class ThemeLoader implements \Twig_LoaderInterface, \Twig_ExistsLoaderInterface,
 
         // Ignore when the theme is disabled
         if (null === $theme) {
-            return false;
+            throw new \Twig_Error_Loader($name);
         }
 
         // Search for the template file.
@@ -184,7 +175,7 @@ class ThemeLoader implements \Twig_LoaderInterface, \Twig_ExistsLoaderInterface,
     protected function validateName($name)
     {
         if (false !== strpos($name, "\0")) {
-            throw new Twig_Error_Loader('A template name cannot contain NUL bytes.');
+            throw new \Twig_Error_Loader('A template name cannot contain NUL bytes.');
         }
 
         $name = ltrim($name, '/');
@@ -198,7 +189,7 @@ class ThemeLoader implements \Twig_LoaderInterface, \Twig_ExistsLoaderInterface,
             }
 
             if ($level < 0) {
-                throw new Twig_Error_Loader(sprintf(
+                throw new \Twig_Error_Loader(sprintf(
                     'Looks like you try to load a template outside configured directories (%s).',
                     $name
                 ));

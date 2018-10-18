@@ -58,8 +58,12 @@ class ThemeParamConverter implements ParamConverterInterface
             return false;
         }
 
-        $class = new \ReflectionClass($configuration->getClass());
+        try {
+            $class = new \ReflectionClass($configuration->getClass());
 
-        return $class->implementsInterface(ThemeInterface::class);
+            return $class->implementsInterface(ThemeInterface::class);
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 }

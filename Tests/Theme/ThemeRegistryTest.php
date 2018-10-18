@@ -4,6 +4,7 @@ namespace Tms\Bundle\ThemeBundle\Tests\Theme;
 
 use Tms\Bundle\ThemeBundle\Theme\ThemeInterface;
 use Tms\Bundle\ThemeBundle\Theme\ThemeRegistry;
+use Tms\Bundle\ThemeBundle\Exception\ThemeNotFoundException;
 
 class ThemeRegistryTest extends \PHPUnit_Framework_TestCase
 {
@@ -124,7 +125,7 @@ class ThemeRegistryTest extends \PHPUnit_Framework_TestCase
         try {
             $registry->getTheme('secondTheme');
             $this->assertFalse(true);
-        } catch (\Exception $e) {
+        } catch (ThemeNotFoundException $e) {
             $this->assertTrue(true);
         }
 

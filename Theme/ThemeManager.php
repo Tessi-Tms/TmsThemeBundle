@@ -49,7 +49,7 @@ class ThemeManager
      * @throws \InvalidArgumentException
      * @throws ThemeNotFoundException
      */
-    public function setActiveTheme($theme)
+    public function setCurrentTheme($theme)
     {
         // Reset active theme on null
         if (is_null($theme)) {

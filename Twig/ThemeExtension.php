@@ -84,7 +84,7 @@ class ThemeExtension extends \Twig_Extension
         // Use static files for the prod environment
         if ('prod' == $env) {
             return sprintf(
-                'themes/%s/%s',
+                '/themes/%s/%s',
                 $theme->getId(),
                 $name
             );

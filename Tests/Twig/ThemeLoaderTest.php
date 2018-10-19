@@ -269,7 +269,11 @@ class ThemeLoaderTest extends \PHPUnit_Framework_TestCase
 
         // Test theme with unknown template
         try {
-            $themeLoader = new ThemeLoader(array(), sprintf('%s/Fixtures', dirname(__DIR__)), $this->getThemeManager($theme));
+            $themeLoader = new ThemeLoader(
+                array(),
+                sprintf('%s/Fixtures', dirname(__DIR__)),
+                $this->getThemeManager($theme)
+            );
             $themeLoader->getCacheKey('unkown.html.twig');
 
             $this->assertTrue(false);
@@ -278,12 +282,20 @@ class ThemeLoaderTest extends \PHPUnit_Framework_TestCase
         }
 
         // Test standard behavior
-        $themeLoader1 = new ThemeLoader(array(), sprintf('%s/Fixtures', dirname(__DIR__)), $this->getThemeManager($theme));
+        $themeLoader1 = new ThemeLoader(
+            array(),
+            sprintf('%s/Fixtures', dirname(__DIR__)),
+            $this->getThemeManager($theme)
+        );
         $cacheKey1 = $themeLoader1->getCacheKey('template.html.twig');
         $this->assertInternalType('string', $cacheKey1);
 
         // Test same template with different themes
-        $themeLoader2 = new ThemeLoader(array(), sprintf('%s/Fixtures', dirname(__DIR__)), $this->getThemeManager($subTheme));
+        $themeLoader2 = new ThemeLoader(
+            array(),
+            sprintf('%s/Fixtures', dirname(__DIR__)),
+            $this->getThemeManager($subTheme)
+        );
         $cacheKey2 = $themeLoader2->getCacheKey('template.html.twig');
         $this->assertInternalType('string', $cacheKey2);
 

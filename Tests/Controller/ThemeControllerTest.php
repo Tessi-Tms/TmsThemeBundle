@@ -30,12 +30,12 @@ class ThemeControllerTest extends \PHPUnit_Framework_TestCase
 
         return array(
             array($theme, 'sheet.css', new NotFoundHttpException(), null),
-            array($theme, 'css/sheet.css', "Some css code\n", "text/css"),
-            array($subTheme, 'css/sheet.css', "Some updated css code for the subTheme\n", "text/css"),
+            array($theme, 'css/sheet.css', "Some css code\n", 'text/css'),
+            array($subTheme, 'css/sheet.css', "Some updated css code for the subTheme\n", 'text/css'),
             array($subTheme, 'images/logo.png', file_get_contents(sprintf(
                 '%s/Fixtures/app/Resources/themes/theme/public/images/logo.png',
                 dirname(__DIR__)
-            )), "image/png"),
+            )), 'image/png'),
         );
     }
 
@@ -56,7 +56,7 @@ class ThemeControllerTest extends \PHPUnit_Framework_TestCase
         $container
             ->expects($this->any())
             ->method('getParameter')
-            ->will($this->returnCallback(function($name){
+            ->will($this->returnCallback(function ($name) {
                 if ('kernel.root_dir' === $name) {
                     return sprintf('%s/Fixtures/app', dirname(__DIR__));
                 }
@@ -70,7 +70,7 @@ class ThemeControllerTest extends \PHPUnit_Framework_TestCase
         $themeController->setContainer($container);
 
         try {
-            $response = $themeController->assetAction(new Request, $theme, $asset);
+            $response = $themeController->assetAction(new Request(), $theme, $asset);
             $this->assertInstanceof(Response::class, $response);
             $this->assertEquals($expectedContent, $response->getContent());
             $this->assertEquals($expectedType, $response->headers->get('content-type'));

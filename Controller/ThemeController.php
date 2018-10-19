@@ -66,6 +66,7 @@ class ThemeController extends Controller
             );
 
             $theme = $theme->getParent();
+
             if (!file_exists($filePath)) {
                 $filePath = null;
             }
@@ -74,12 +75,11 @@ class ThemeController extends Controller
         // search in the default directory
         if (!$filePath) {
             $filePath = sprintf(
-                '%s/../Web/%s',
+                '%s/../web/%s',
                 $this->getParameter('kernel.root_dir'),
                 $asset
             );
         }
-
         // Verify the asset existance
         if (!file_exists($filePath)) {
             throw $this->createNotFoundException(sprintf('The asset "%s" does not exist', $asset));

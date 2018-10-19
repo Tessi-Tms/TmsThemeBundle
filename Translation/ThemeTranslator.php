@@ -103,7 +103,7 @@ class ThemeTranslator extends Translator
         if (!isset($this->catalogues[$locale])) {
             $this->loadCatalogue($locale);
         }
-        $catalogue = $this->catalogues[$locale];
+        $catalogue = $this->getCatalogue($locale);
 
         // Search for the translation in the theme and his parents
         do {
@@ -141,10 +141,10 @@ class ThemeTranslator extends Translator
     protected function loadCatalogue($locale)
     {
         // Translation file configuration
-        $regex = '/^(.*)\.([^.]+)\.(yml|xml|xlf)$/';
+        $regex = '/^(.*)\.([^.]+)\.(php|xlf|yml)$/';
         $formats = array(
+            'php' => 'php',
             'xlf' => 'xliff',
-            'xml' => 'xml',
             'yml' => 'yml',
         );
 
@@ -167,14 +167,19 @@ class ThemeTranslator extends Translator
                         }
 
                         // Parse the filename
-                        $domain = sprintf('%s.%s', $theme->getId(), preg_replace($regex, '$1', $file));
-                        $locale = preg_replace($regex, '$2', $file);
-                        $format = $formats[preg_replace($regex, '$3', $file)];
+                        $fileDomain = sprintf('%s.%s', $theme->getId(), preg_replace($regex, '$1', $file));
+                        $fileLocale = preg_replace($regex, '$2', $file);
+                        $fileFormat = $formats[preg_replace($regex, '$3', $file)];
+
+                        // Ignore files from another locale
+                        if ($fileLocale != $locale) {
+                            continue;
+                        }
 
                         // Add the translations files to the translator
                         $translationsFile = sprintf('%s/%s', $translationsPath, $file);
-                        $this->addResource($format, $translationsFile, $locale, $theme->getId());
-                        $this->addResource($format, $translationsFile, $locale, $domain);
+                        $this->addResource($fileFormat, $translationsFile, $fileLocale, $theme->getId());
+                        $this->addResource($fileFormat, $translationsFile, $fileLocale, $fileDomain);
                     }
                     closedir($dh);
                 }

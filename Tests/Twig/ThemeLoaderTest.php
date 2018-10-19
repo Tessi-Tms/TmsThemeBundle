@@ -3,7 +3,7 @@
 namespace Tms\Bundle\ThemeBundle\Tests\Twig;
 
 use Tms\Bundle\ThemeBundle\Model\Theme;
-use Tms\Bundle\ThemeBundle\Tests\Twig\Fixtures\somebundle\SomeBundle;
+use Tms\Bundle\ThemeBundle\Tests\Fixtures\somebundle\SomeBundle;
 use Tms\Bundle\ThemeBundle\Theme\ThemeInterface;
 use Tms\Bundle\ThemeBundle\Theme\ThemeManager;
 use Tms\Bundle\ThemeBundle\Twig\ThemeLoader;
@@ -37,13 +37,13 @@ class ThemeLoaderTest extends \PHPUnit_Framework_TestCase
         // Models
         $theme = new Theme();
         $theme
-            ->setId('test')
-            ->setName('The test template')
+            ->setId('theme')
+            ->setName('The theme template')
         ;
         $subTheme = new Theme();
         $subTheme
-            ->setId('subTest')
-            ->setName('The sub test template')
+            ->setId('subTheme')
+            ->setName('The sub theme template')
             ->setParent($theme)
         ;
 
@@ -87,7 +87,7 @@ class ThemeLoaderTest extends \PHPUnit_Framework_TestCase
             array(
                 'SomeBundle' => SomeBundle::class,
             ),
-            sprintf('%s/Fixtures', __DIR__),
+            sprintf('%s/Fixtures', dirname(__DIR__)),
             $this->getThemeManager()
         );
 
@@ -139,7 +139,7 @@ class ThemeLoaderTest extends \PHPUnit_Framework_TestCase
             array(
                 'SomeBundle' => SomeBundle::class,
             ),
-            sprintf('%s/Fixtures', __DIR__),
+            sprintf('%s/Fixtures', dirname(__DIR__)),
             $this->getThemeManager($theme)
         );
 
@@ -170,7 +170,7 @@ class ThemeLoaderTest extends \PHPUnit_Framework_TestCase
             array(
                 'SomeBundle' => SomeBundle::class,
             ),
-            sprintf('%s/Fixtures', __DIR__),
+            sprintf('%s/Fixtures', dirname(__DIR__)),
             $this->getThemeManager($theme)
         );
 
@@ -195,7 +195,7 @@ class ThemeLoaderTest extends \PHPUnit_Framework_TestCase
     {
         // Models
         $theme = new Theme();
-        $theme->setId('test');
+        $theme->setId('theme');
 
         return array(
             array(null, 'unkwnon.html.twig', false),
@@ -228,7 +228,7 @@ class ThemeLoaderTest extends \PHPUnit_Framework_TestCase
             array(
                 'SomeBundle' => SomeBundle::class,
             ),
-            sprintf('%s/Fixtures', __DIR__),
+            sprintf('%s/Fixtures', dirname(__DIR__)),
             $this->getThemeManager($theme)
         );
 
@@ -247,19 +247,19 @@ class ThemeLoaderTest extends \PHPUnit_Framework_TestCase
         // Models
         $theme = new Theme();
         $theme
-            ->setId('test')
+            ->setId('theme')
             ->setName('The test template')
         ;
         $subTheme = new Theme();
         $subTheme
-            ->setId('subTest')
+            ->setId('subTheme')
             ->setName('The sub test template')
             ->setParent($theme)
         ;
 
         // Test without theme
         try {
-            $themeLoader = new ThemeLoader(array(), sprintf('%s/Fixtures', __DIR__), $this->getThemeManager());
+            $themeLoader = new ThemeLoader(array(), sprintf('%s/Fixtures', dirname(__DIR__)), $this->getThemeManager());
             $themeLoader->getCacheKey('template.html.twig');
 
             $this->assertTrue(false);
@@ -269,7 +269,7 @@ class ThemeLoaderTest extends \PHPUnit_Framework_TestCase
 
         // Test theme with unknown template
         try {
-            $themeLoader = new ThemeLoader(array(), sprintf('%s/Fixtures', __DIR__), $this->getThemeManager($theme));
+            $themeLoader = new ThemeLoader(array(), sprintf('%s/Fixtures', dirname(__DIR__)), $this->getThemeManager($theme));
             $themeLoader->getCacheKey('unkown.html.twig');
 
             $this->assertTrue(false);
@@ -278,12 +278,12 @@ class ThemeLoaderTest extends \PHPUnit_Framework_TestCase
         }
 
         // Test standard behavior
-        $themeLoader1 = new ThemeLoader(array(), sprintf('%s/Fixtures', __DIR__), $this->getThemeManager($theme));
+        $themeLoader1 = new ThemeLoader(array(), sprintf('%s/Fixtures', dirname(__DIR__)), $this->getThemeManager($theme));
         $cacheKey1 = $themeLoader1->getCacheKey('template.html.twig');
         $this->assertInternalType('string', $cacheKey1);
 
         // Test same template with different themes
-        $themeLoader2 = new ThemeLoader(array(), sprintf('%s/Fixtures', __DIR__), $this->getThemeManager($subTheme));
+        $themeLoader2 = new ThemeLoader(array(), sprintf('%s/Fixtures', dirname(__DIR__)), $this->getThemeManager($subTheme));
         $cacheKey2 = $themeLoader2->getCacheKey('template.html.twig');
         $this->assertInternalType('string', $cacheKey2);
 
@@ -305,14 +305,14 @@ class ThemeLoaderTest extends \PHPUnit_Framework_TestCase
     {
         // Models
         $theme = new Theme();
-        $theme->setId('test');
+        $theme->setId('theme');
 
         // ThemeLoader
         $themeLoader = new ThemeLoader(
             array(
                 'SomeBundle' => SomeBundle::class,
             ),
-            sprintf('%s/Fixtures', __DIR__),
+            sprintf('%s/Fixtures', dirname(__DIR__)),
             $this->getThemeManager($theme)
         );
 
@@ -345,7 +345,7 @@ class ThemeLoaderTest extends \PHPUnit_Framework_TestCase
             array(
                 'SomeBundle' => SomeBundle::class,
             ),
-            sprintf('%s/Fixtures', __DIR__),
+            sprintf('%s/Fixtures', dirname(__DIR__)),
             $this->getThemeManager($theme)
         );
 

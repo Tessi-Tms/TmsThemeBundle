@@ -11,8 +11,8 @@ use Tms\Bundle\ThemeBundle\Model\Theme;
 use Tms\Bundle\ThemeBundle\Theme\ThemeInterface;
 use Tms\Bundle\ThemeBundle\Theme\ThemeManager;
 use Tms\Bundle\ThemeBundle\Translation\ThemeTranslator;
-use Tms\Bundle\ThemeBundle\Tests\Translation\Fixtures\somebundle\SomeBundle;
-use Tms\Bundle\ThemeBundle\Tests\Translation\Fixtures\anotherbundle\AnotherBundle;
+use Tms\Bundle\ThemeBundle\Tests\Fixtures\somebundle\SomeBundle;
+use Tms\Bundle\ThemeBundle\Tests\Fixtures\anotherbundle\AnotherBundle;
 
 class ThemeTranslatorTest extends \PHPUnit_Framework_TestCase
 {
@@ -119,7 +119,7 @@ class ThemeTranslatorTest extends \PHPUnit_Framework_TestCase
             'SomeBundle' => SomeBundle::class,
             'AnotherBundle' => AnotherBundle::class,
         ));
-        $themeTranslator->setRootPath(sprintf('%s/Fixtures', __DIR__));
+        $themeTranslator->setRootPath(sprintf('%s/Fixtures', dirname(__DIR__)));
         $themeTranslator->setThemeManager($themeManager);
 
         if (is_null($number)) {
@@ -174,7 +174,7 @@ class ThemeTranslatorTest extends \PHPUnit_Framework_TestCase
         $themeTranslator->addLoader('php', new PhpFileLoader());
         $themeTranslator->addLoader('xliff', new XliffFileLoader());
         $themeTranslator->addLoader('yml', new YamlFileLoader());
-        $themeTranslator->setRootPath(sprintf('%s/Fixtures', __DIR__));
+        $themeTranslator->setRootPath(sprintf('%s/Fixtures', dirname(__DIR__)));
         $themeTranslator->setThemeManager($themeManager);
 
         $this->assertEquals('Message from the tessi theme', $themeTranslator->trans('test'));

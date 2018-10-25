@@ -3,7 +3,6 @@
 namespace Tms\Bundle\ThemeBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
@@ -19,15 +18,8 @@ class ThemesInstallCommand extends ContainerAwareCommand
     {
         $this
             ->setName('tms:themes:install')
-            ->setDefinition(array(
-                new InputArgument('target', InputArgument::OPTIONAL, 'The target directory', 'web'),
-            ))
-            ->setDescription('Installs WebConsumerApp specific assets under a public web directory')
-            ->setHelp(<<<EOT
-The <info>%command.name%</info> command installs assets into a given
-directory (e.g. the web directory).
-EOT
-            )
+            ->setDescription('Installs assets under a public web directory')
+            ->setHelp("The <info>%command.name%</info> command installs assets under a public web directory'.")
         ;
     }
 
@@ -36,15 +28,10 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        // Check the main directory
-        $targetDirectory = rtrim($input->getArgument('target'), '/');
-        if (!is_dir($targetDirectory)) {
-            throw new \InvalidArgumentException(sprintf('The target directory "%s" does not exist.', $mainDirectory));
-        }
-
         // Remove old assets
         $output->writeln('Removing outdated themes assets');
-        $target = sprintf('%s/themes', $targetDirectory);
+        $target = sprintf('%s/web/themes', dirname($this->getContainer()->getParameter('kernel.root_dir')));
+
         $this
             ->getContainer()
             ->get('filesystem')
@@ -55,7 +42,7 @@ EOT
         $themeManager = $this->getContainer()->get(ThemeManager::class);
         foreach ($themeManager->getThemes() as $theme) {
             $output->writeln(sprintf('Installing the <info>%s</info> theme assets', $theme->getName()));
-            $this->installThemeAssets($input, $output, $theme, sprintf('%s/%s', $target, $theme->getId()));
+            $this->installThemeAssets($input, $output, $theme, sprintf('web/themes/%s', $theme->getId()));
         }
     }
 

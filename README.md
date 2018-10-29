@@ -1,5 +1,5 @@
 TmsThemeBundle
-===========================
+==============
 
 The TmsThemeBundle provides a simple way to handle multiple themes in a symfony application.
 You will be able to manage, the templates files, the translations and all your assets for a theme.
@@ -42,3 +42,15 @@ public function registerBundles()
     );
 }
 ```
+
+Include the bundle routing
+```yaml
+#app/resources/routing.yml
+tms_theme:
+    resource: "@TmsThemeBundle/Resources/config/routing.yml"
+```
+
+Documentation
+-------------
+
+You can find the complete documentation [here](Resources/doc/usages.md)

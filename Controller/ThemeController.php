@@ -46,7 +46,7 @@ class ThemeController extends Controller
      * Return an asset for the given theme.
      *
      * @Route("/assets/{asset}", name="tms_theme_asset", requirements={
-     *     "asset" = "^[a-zA-Z1-9/.-]+$"
+     *     "asset" = "^[a-zA-Z0-9/.-]+$"
      * },)
      *
      * @param Request        $request Instance of Request

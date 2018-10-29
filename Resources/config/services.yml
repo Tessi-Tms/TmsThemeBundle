@@ -28,6 +28,6 @@ services:
             - { name: request.param_converter, priority: -2, converter: theme_converter }
 
 # Alias
-    tms_theme.helper:
+    tms_theme.manager:
         alias: Tms\Bundle\ThemeBundle\Theme\ThemeManager
         public: true

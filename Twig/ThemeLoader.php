@@ -271,7 +271,6 @@ class ThemeLoader implements \Twig_LoaderInterface, \Twig_ExistsLoaderInterface,
         return $this->cache[$cacheName] = $path;
     }
 
-
     /**
      * Find a template inside a bundle.
      *

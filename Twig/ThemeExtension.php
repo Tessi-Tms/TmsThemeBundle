@@ -92,13 +92,13 @@ class ThemeExtension extends \Twig_Extension
             $env = $context['app']->getEnvironment();
         }
 
-        // Is less compiler available
-        if ((null !== $this->lessCompiler) && preg_match('/[.]less$/', $name)) {
-            $name = sprintf('%s.css', $name);
-        }
-
         // Use static files for the prod environment
         if ('prod' == $env) {
+            // Is less compiler available
+            if ((null !== $this->lessCompiler) && preg_match('/[.]less$/', $name)) {
+                $name = sprintf('%s.css', $name);
+            }
+
             return sprintf(
                 '/themes/%s/%s',
                 $theme->getId(),

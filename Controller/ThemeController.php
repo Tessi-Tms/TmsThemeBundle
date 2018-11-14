@@ -23,7 +23,7 @@ class ThemeController extends Controller
     protected $lessCompiler = null;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {

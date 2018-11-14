@@ -163,7 +163,7 @@ class ThemesInstallCommand extends ContainerAwareCommand
                 ->getContainer()
                 ->get('filesystem')
                 ->dumpFile(
-                    sprintf('%s.css',$file->getRealPath()),
+                    sprintf('%s.css', $file->getRealPath()),
                     $lessCompiler->compileFile($file->getRealPath())
                 )
             ;

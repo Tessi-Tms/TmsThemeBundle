@@ -23,6 +23,9 @@
         "symfony/filesystem": "~2.7|~3.3",
         "symfony/translation": "~2.7|~3.3"
     },
+    "suggest": {
+        "leafo/lessphp": "Will automatically transform less files to css"
+    },
     "autoload": {
         "psr-4": { "Tms\\Bundle\\ThemeBundle\\": "" }
     }

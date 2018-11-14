@@ -68,6 +68,7 @@ class ThemesInstallCommand extends ContainerAwareCommand
             $finder
                 ->directories()
                 ->in($from)
+                ->exclude('bundles')
                 ->exclude('themes')
             ;
             foreach ($finder as $dir) {
@@ -104,6 +105,11 @@ class ThemesInstallCommand extends ContainerAwareCommand
                 );
             }
         }
+
+        // Convert less files
+        if (class_exists('lessc')) {
+            $this->convertLessFiles($input, $output, $path);
+        }
     }
 
     /**
@@ -129,5 +135,38 @@ class ThemesInstallCommand extends ContainerAwareCommand
                 'override' => true,
             ))
         ;
+    }
+
+    /**
+     * Convert all the less file in the path.
+     *
+     * @param InputInterface  $input  Instance of InputInterface
+     * @param OutputInterface $output Instance of OutputInterface
+     * @param string          $path   The file path
+     */
+    protected function convertLessFiles(InputInterface $input, OutputInterface $output, $path)
+    {
+        $lessCompiler = new \lessc();
+        $rootDir = dirname($this->getContainer()->getParameter('kernel.root_dir'));
+        $output->writeln(sprintf(
+            'Converting less files from <comment>%s</comment>',
+            str_replace("$rootDir/", '', $path)
+        ));
+
+        $finder = Finder::create()
+            ->in($path)
+            ->name('*.less')
+            ->files()
+        ;
+        foreach ($finder as $file) {
+            $this
+                ->getContainer()
+                ->get('filesystem')
+                ->dumpFile(
+                    sprintf('%s.css',$file->getRealPath()),
+                    $lessCompiler->compileFile($file->getRealPath())
+                )
+            ;
+        }
     }
 }

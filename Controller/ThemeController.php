@@ -16,6 +16,23 @@ use Tms\Bundle\ThemeBundle\Theme\ThemeInterface;
 class ThemeController extends Controller
 {
     /**
+     * Instance of lessc.
+     *
+     * @var \lessc
+     */
+    protected $lessCompiler = null;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        if (class_exists('lessc')) {
+            $this->lessCompiler = new \lessc();
+        }
+    }
+
+    /**
      * Guess the file mime type from extension.
      *
      * @param string $filename The file to analyze
@@ -28,6 +45,11 @@ class ThemeController extends Controller
         $types = array(
             'css' => 'text/css',
         );
+
+        // Handle less files
+        if (null !== $this->lessCompiler) {
+            $types['less'] = 'text/css';
+        }
 
         $ext = strtolower(preg_replace('/^.*[.]([^.]+)$/', '$1', $filename));
         if (isset($types[$ext])) {
@@ -80,13 +102,22 @@ class ThemeController extends Controller
                 $asset
             );
         }
+
         // Verify the asset existance
         if (!file_exists($filePath)) {
             throw $this->createNotFoundException(sprintf('The asset "%s" does not exist', $asset));
         }
 
+        // Retrieve the file content
+        $content = file_get_contents($filePath);
+
+        // Convert less to css
+        if ((null !== $this->lessCompiler) && preg_match('/[.]less$/', $asset)) {
+            $content = $this->lessCompiler->compileFile($filePath);
+        }
+
         // Return the asset
-        return new Response(file_get_contents($filePath), Response::HTTP_OK, array(
+        return new Response($content, Response::HTTP_OK, array(
             'Content-Type' => $this->getMimeType($filePath),
         ));
     }

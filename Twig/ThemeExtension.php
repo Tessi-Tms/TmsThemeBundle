@@ -9,6 +9,13 @@ use Tms\Bundle\ThemeBundle\Theme\ThemeManager;
 class ThemeExtension extends \Twig_Extension
 {
     /**
+     * Instance of lessc.
+     *
+     * @var \lessc
+     */
+    protected $lessCompiler = null;
+
+    /**
      * Instance of Router.
      *
      * @var Router
@@ -32,6 +39,10 @@ class ThemeExtension extends \Twig_Extension
     {
         $this->router = $router;
         $this->themeManager = $themeManager;
+
+        if (class_exists('lessc')) {
+            $this->lessCompiler = new \lessc();
+        }
     }
 
     /**
@@ -79,6 +90,11 @@ class ThemeExtension extends \Twig_Extension
         $env = 'dev';
         if (isset($context['app']) && ($context['app'] instanceof AppVariable)) {
             $env = $context['app']->getEnvironment();
+        }
+
+        // Is less compiler available
+        if ((null !== $this->lessCompiler) && preg_match('/[.]less$/', $name)) {
+            $name = sprintf('%s.css', $name);
         }
 
         // Use static files for the prod environment

@@ -207,28 +207,29 @@ class ThemeLoader implements \Twig_LoaderInterface, \Twig_ExistsLoaderInterface,
      *
      * @throws \Twig_Error_Loader
      */
-    public function findTemplate(ThemeInterface $theme, $name)
+    public function findTemplate(ThemeInterface $theme = null, $name)
     {
+        $cacheName = sprintf('%s-%s', null !== $theme ? $theme->getId() : 'notheme', $name);
+
         // Normalize and validate the template name
         $name = $this->normalizeName($name);
         $this->validateName($name);
 
         // Search in the cached templates
-        if (isset($this->cache[$name])) {
-            return $this->cache[$name];
+        if (isset($this->cache[$cacheName])) {
+            return $this->cache[$cacheName];
         }
 
         // Search in the main template directory
-        $path = sprintf('%s/app/Resources/themes/%s/views/%s', $this->rootPath, $theme->getId(), $name);
+        $path = sprintf('%s/app/Resources/views/%s', $this->rootPath, $name);
+        if (null !== $theme) {
+            $path = sprintf('%s/app/Resources/themes/%s/views/%s', $this->rootPath, $theme->getId(), $name);
+        }
 
         // Force parent template
-        if (preg_match('/^#parent#/', $name)) {
-            $parentName = preg_replace('/^#parent#/', '', $name);
-            $path = sprintf('%s/app/Resources/views/%s', $this->rootPath, $parentName);
-
-            if (null !== $theme->getParent()) {
-                $path = $this->findTemplate($theme->getParent(), $parentName);
-            }
+        if (preg_match('/^#parent#/', $name) && null !== $theme) {
+            $name = preg_replace('/^#parent#/', '', $name);
+            $path = $this->findTemplate($theme->getParent(), $name);
 
         // Handle '@' notation for bundle templates
         } elseif (isset($name[0]) && '@' == $name[0] && $pos = strpos($name, '/')) {
@@ -239,9 +240,8 @@ class ThemeLoader implements \Twig_LoaderInterface, \Twig_ExistsLoaderInterface,
             $path = $this->findBundleTemplate($theme, $name, $bundle, $template);
 
         // Handle '::' notation for bundles templates
-        } elseif (preg_match('/^[!]?[^:]+Bundle:[^:]*:[^:]+$/', $name)) {
+        } elseif (preg_match('/^[^:]+Bundle:[^:]*:[^:]+$/', $name)) {
             list($bundle, $controller, $template) = explode(':', $name);
-            $bundle = preg_replace('/^!/', '', $bundle);
             if ($controller) {
                 $template = sprintf('%s/%s', $controller, $template);
             }
@@ -251,20 +251,24 @@ class ThemeLoader implements \Twig_LoaderInterface, \Twig_ExistsLoaderInterface,
 
         // Check if the template file exists
         if (!file_exists($path)) {
+            if (null === $theme) {
+                throw new \Twig_Error_Loader(sprintf('Unable to find template "%s"', $name));
+            }
+
             // Search in the parent theme
-            if (null === $theme->getParent()) {
+            try {
+                $path = $this->findTemplate($theme->getParent(), $name);
+            } catch (\Twig_Error_Loader $e) {
                 throw new \Twig_Error_Loader(sprintf(
                     'Unable to find template "%s" for the %s theme.',
                     $name,
                     $theme->getName()
                 ));
             }
-
-            $path = $this->findTemplate($theme->getParent(), $name);
         }
 
         // Cache the path for the template name
-        return $this->cache[$name] = $path;
+        return $this->cache[$cacheName] = $path;
     }
 
 
@@ -278,31 +282,45 @@ class ThemeLoader implements \Twig_LoaderInterface, \Twig_ExistsLoaderInterface,
      *
      * @return string
      */
-    protected function findBundleTemplate(ThemeInterface $theme, $name, $bundle, $template)
+    protected function findBundleTemplate(ThemeInterface $theme = null, $name, $bundle, $template)
     {
         $path = null;
 
         // The bundle is found
         if (isset($this->bundles[$bundle])) {
             $rc = new \ReflectionClass($this->bundles[$bundle]);
-
             // Search in the main directory
             $path = sprintf(
-                '%s/app/Resources/themes/%s/%s/views/%s',
+                '%s/app/Resources/%s/views/%s',
                 $this->rootPath,
-                $theme->getId(),
                 $bundle,
                 $template
             );
-            
+            if (null !== $theme) {
+                $path = sprintf(
+                    '%s/app/Resources/themes/%s/%s/views/%s',
+                    $this->rootPath,
+                    $theme->getId(),
+                    $bundle,
+                    $template
+                );
+            }
+
             // Search in the bundle
             if (preg_match('/^@?!/', $name) || !file_exists($path)) {
                 $path = sprintf(
-                    '%s/Resources/themes/%s/views/%s',
+                    '%s/Resources/views/%s',
                     dirname($rc->getFileName()),
-                    $theme->getId(),
                     $template
                 );
+                if (null !== $theme) {
+                    $path = sprintf(
+                        '%s/Resources/themes/%s/views/%s',
+                        dirname($rc->getFileName()),
+                        $theme->getId(),
+                        $template
+                    );
+                }
             }
         }
 

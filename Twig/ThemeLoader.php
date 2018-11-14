@@ -199,12 +199,11 @@ class ThemeLoader implements \Twig_LoaderInterface, \Twig_ExistsLoaderInterface,
 
     /**
      * Return the template path.
-     * Will return false when the template is not found.
      *
      * @param ThemeInterface $theme Instance of ThemeInterface
      * @param string         $name  The name of the template to find
      *
-     * @return string|bool
+     * @return string
      *
      * @throws \Twig_Error_Loader
      */
@@ -234,38 +233,20 @@ class ThemeLoader implements \Twig_LoaderInterface, \Twig_ExistsLoaderInterface,
         // Handle '@' notation for bundle templates
         } elseif (isset($name[0]) && '@' == $name[0] && $pos = strpos($name, '/')) {
             $bundle = sprintf('%sBundle', substr($name, 1, $pos - 1));
+            $bundle = preg_replace('/^!/', '', $bundle);
             $template = substr($name, $pos + 1);
 
-            // The namespace is a bundle name
-            if (isset($this->bundles[$bundle])) {
-                $rc = new \ReflectionClass($this->bundles[$bundle]);
-
-                $path = sprintf(
-                    '%s/Resources/themes/%s/views/%s',
-                    dirname($rc->getFileName()),
-                    $theme->getId(),
-                    $template
-                );
-            }
+            $path = $this->findBundleTemplate($theme, $name, $bundle, $template);
 
         // Handle '::' notation for bundles templates
-        } elseif (preg_match('/^[^:]+Bundle:[^:]*:[^:]+$/', $name)) {
+        } elseif (preg_match('/^[!]?[^:]+Bundle:[^:]*:[^:]+$/', $name)) {
             list($bundle, $controller, $template) = explode(':', $name);
+            $bundle = preg_replace('/^!/', '', $bundle);
             if ($controller) {
                 $template = sprintf('%s/%s', $controller, $template);
             }
 
-            // The bundle is found
-            if (isset($this->bundles[$bundle])) {
-                $rc = new \ReflectionClass($this->bundles[$bundle]);
-
-                $path = sprintf(
-                    '%s/Resources/themes/%s/views/%s',
-                    dirname($rc->getFileName()),
-                    $theme->getId(),
-                    $template
-                );
-            }
+            $path = $this->findBundleTemplate($theme, $name, $bundle, $template);
         }
 
         // Check if the template file exists
@@ -284,5 +265,47 @@ class ThemeLoader implements \Twig_LoaderInterface, \Twig_ExistsLoaderInterface,
 
         // Cache the path for the template name
         return $this->cache[$name] = $path;
+    }
+
+
+    /**
+     * Find a template inside a bundle.
+     *
+     * @param ThemeInterface $theme    Instance of ThemeInterface
+     * @param string         $name     The name of the template to find
+     * @param string         $bundle   The bundle name
+     * @param string         $template The template name
+     *
+     * @return string
+     */
+    protected function findBundleTemplate(ThemeInterface $theme, $name, $bundle, $template)
+    {
+        $path = null;
+
+        // The bundle is found
+        if (isset($this->bundles[$bundle])) {
+            $rc = new \ReflectionClass($this->bundles[$bundle]);
+
+            // Search in the main directory
+            $path = sprintf(
+                '%s/app/Resources/themes/%s/%s/views/%s',
+                $this->rootPath,
+                $theme->getId(),
+                $bundle,
+                $template
+            );
+            
+            // Search in the bundle
+            if (preg_match('/^@?!/', $name) || !file_exists($path)) {
+                $path = sprintf(
+                    '%s/Resources/themes/%s/views/%s',
+                    dirname($rc->getFileName()),
+                    $theme->getId(),
+                    $template
+                );
+            }
+        }
+
+        return $path;
     }
 }

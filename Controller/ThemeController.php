@@ -3,6 +3,7 @@
 namespace Tms\Bundle\ThemeBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Cache\Simple\FilesystemCache;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -78,6 +79,27 @@ class ThemeController extends Controller
      */
     public function assetAction(Request $request, ThemeInterface $theme, $asset)
     {
+        // Search file in the asset cache
+        $cache = new FilesystemCache();
+        $cacheKey = sprintf('tms_theme_%s_asset_%s', $theme->getId(), md5($asset));
+        if ($cache->has($cacheKey)) {
+            $assetCache = $cache->get($cacheKey);
+            if (
+                isset(
+                    $assetCache['content'],
+                    $assetCache['mimetype'],
+                    $assetCache['filepath'],
+                    $assetCache['filemtime']
+                ) && (
+                    filemtime($assetCache['filepath']) <= $assetCache['filemtime']
+                )
+            ) {
+                return new Response($assetCache['content'], Response::HTTP_OK, array(
+                    'Content-Type' => $assetCache['mimetype'],
+                ));
+            }
+        }
+
         do {
             // Calculate the asset file path
             $filePath = sprintf(
@@ -103,22 +125,31 @@ class ThemeController extends Controller
             );
         }
 
-        // Verify the asset existance
+        // Verify the asset existence
         if (!file_exists($filePath)) {
             throw $this->createNotFoundException(sprintf('The asset "%s" does not exist', $asset));
         }
 
         // Retrieve the file content
         $content = file_get_contents($filePath);
+        $mimeType = $this->getMimeType($filePath);
 
         // Convert less to css
         if ((null !== $this->lessCompiler) && preg_match('/[.]less$/', $asset)) {
-            $content = $this->lessCompiler->compileFile($filePath);
+            $content = preg_replace('/\s+/', ' ', $this->lessCompiler->compileFile($filePath));
         }
+
+        // Store asset in cache
+        $cache->set($cacheKey, array(
+            'content' => $content,
+            'mimetype' => $mimeType,
+            'filepath' => $filePath,
+            'filemtime' => filemtime($filePath),
+        ));
 
         // Return the asset
         return new Response($content, Response::HTTP_OK, array(
-            'Content-Type' => $this->getMimeType($filePath),
+            'Content-Type' => $mimeType,
         ));
     }
 }

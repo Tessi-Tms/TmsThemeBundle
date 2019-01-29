@@ -2,6 +2,12 @@ services:
     Tms\Bundle\ThemeBundle\Theme\ThemeRegistry: ~
     Tms\Bundle\ThemeBundle\Translation\ThemeTranslator: ~
 
+    Tms\Bundle\ThemeBundle\Form\ThemeType:
+        arguments:
+            $themeRegistry: '@Tms\Bundle\ThemeBundle\Theme\ThemeRegistry'
+        tags:
+            - { name: form.type }
+
     Tms\Bundle\ThemeBundle\Theme\ThemeManager:
         arguments:
             $themeRegistry: '@Tms\Bundle\ThemeBundle\Theme\ThemeRegistry'

@@ -14,6 +14,13 @@ class ThemeManager
     protected $currentTheme;
 
     /**
+     * The current theme options.
+     *
+     * @var array
+     */
+    protected $currentThemeOptions;
+
+    /**
      * Instance of ThemeRegistry.
      *
      * @var ThemeRegistry
@@ -28,6 +35,7 @@ class ThemeManager
     public function __construct(ThemeRegistry $themeRegistry)
     {
         $this->currentTheme = null;
+        $this->currentThemeOptions = array();
         $this->themeRegistry = $themeRegistry;
     }
 
@@ -44,12 +52,13 @@ class ThemeManager
     /**
      * Set the current theme.
      *
-     * @param mixed $theme An instance of ThemeInterface or an identifier
+     * @param mixed $theme   An instance of ThemeInterface or an identifier
+     * @param array $options The theme options
      *
      * @throws \InvalidArgumentException
      * @throws ThemeNotFoundException
      */
-    public function setCurrentTheme($theme)
+    public function setCurrentTheme($theme, array $options = array())
     {
         // Reset active theme on null
         if (is_null($theme)) {
@@ -68,6 +77,14 @@ class ThemeManager
         }
 
         $this->currentTheme = $theme;
+
+        // Update the theme options
+        $this->currentThemeOptions = $theme->getOptions();
+        foreach ($options as $key => $value) {
+            if (isset($this->currentThemeOptions[$key])) {
+                $this->currentThemeOptions[$key] = $value;
+            }
+        }
     }
 
     /**

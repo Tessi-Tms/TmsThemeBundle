@@ -21,6 +21,13 @@ class Theme implements ThemeInterface
     protected $name;
 
     /**
+     * The theme available options.
+     *
+     * @var array
+     */
+    protected $options;
+
+    /**
      * The theme parent.
      *
      * @var Theme
@@ -36,6 +43,7 @@ class Theme implements ThemeInterface
     {
         $this->id = isset($data['id']) ? $data['id'] : null;
         $this->name = isset($data['name']) ? $data['name'] : null;
+        $this->options = (isset($data['options']) && is_array($data['options'])) ? $data['options'] : array();
         $this->parent = (isset($data['parent']) && $data['parent'] instanceof ThemeInterface) ? $data['parent'] : null;
     }
 
@@ -79,6 +87,28 @@ class Theme implements ThemeInterface
     public function setName($value)
     {
         $this->name = $value;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
+
+    /**
+     * Set the value of The theme options.
+     *
+     * @param array options
+     *
+     * @return Theme
+     */
+    public function setOptions(array $value)
+    {
+        $this->options = $value;
 
         return $this;
     }

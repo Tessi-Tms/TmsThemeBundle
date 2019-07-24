@@ -96,4 +96,14 @@ class ThemeManager
     {
         return $this->currentTheme;
     }
+
+    /**
+     * Return the current theme options.
+     *
+     * @return array
+     */
+    public function getCurrentThemeOptions()
+    {
+        return $this->currentThemeOptions;
+    }
 }

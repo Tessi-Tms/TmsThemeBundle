@@ -53,6 +53,7 @@ class ThemeExtension extends \Twig_Extension
         return array(
             new \Twig_SimpleFunction('templateParent', array($this, 'templateParent')),
             new \Twig_SimpleFunction('themeAsset', array($this, 'themeAsset'), array('needs_context' => true)),
+            new \Twig_SimpleFunction('themeOptions', array($this, 'themeOptions')),
         );
     }
 
@@ -111,5 +112,21 @@ class ThemeExtension extends \Twig_Extension
             'theme' => $theme->getId(),
             'asset' => $name,
         ));
+    }
+
+    /**
+     * Retrieve a theme option.
+     * Without name, it will return all the theme options.
+     *
+     * @param string $name    The option name
+     * @param mixed  $default The option default value
+     *
+     * @return mixed
+     */
+    public function themeOptions($name = null, $default = null)
+    {
+        $options = $this->themeManager->getCurrentThemeOptions();
+
+        return is_null($name) ? $options : (isset($options[$name]) ? $options[$name] : $default);
     }
 }

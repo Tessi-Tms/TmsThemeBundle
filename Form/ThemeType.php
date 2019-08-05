@@ -56,7 +56,7 @@ class ThemeType extends AbstractType
             ->add('options', ThemeOptionsType::class)
         ;
 
-        $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
             $data = $event->getData();
             $form = $event->getForm();
 

@@ -1,0 +1,65 @@
+{%- block theme_widget -%}
+    {{ form_widget(form) }}
+    <script type="text/javascript">
+        function getJquery(callback) {
+            if (!window.jQuery) {
+                if (!document.getElementById('tms_jquery')) {
+                    var sJquery = document.createElement("script");
+                    sJquery.id = "tms_jquery";
+                    sJquery.src = "https://code.jquery.com/jquery-2.2.4.min.js";
+                    sJquery.type = "text/javascript";
+
+                    var head = document.getElementsByTagName('head')[0];
+                    head.appendChild(sJquery);
+                } else {
+                    var sJquery = document.getElementById('tms_jquery');
+                }
+
+                var onload = sJquery.onload;
+                sJquery.onload = sJquery.onreadystatechange = function() {
+                    if (typeof onload == 'function') {
+                        onload();
+                    }
+                    callback(window.jQuery);
+                }
+            } else {
+                callback(window.jQuery);
+            }
+        };
+
+        getJquery(function($) {
+            $('#{{ form.vars.id }}').on('change', '#{{ form.id.vars.id }}', function(){
+                $('#{{ form.options.vars.id }}').addClass('loading');
+
+                $.ajax({
+                    url: "{{ path('tms_theme_form', {theme: 'toreplace'}) }}"
+                      .replace('toreplace',$(this).val() || null),
+                    complete: function(data) {
+                        $('#{{ form.options.vars.id }}').removeClass('loading');
+
+                        var response = data.responseText
+                          .replace('form\[options\]', '{{ form.options.vars.full_name }}');
+
+                        var $newForm = $(response)
+                            .find('#form_options')
+                            .first();
+
+                        $newForm
+                          .attr('id', "{{ form.options.vars.id }}")
+                        ;
+
+                        if (! $newForm.children().length) {
+                          $newForm.html('&nbsp;');
+                        }
+
+                        $('#{{ form.options.vars.id }}').replaceWith($newForm);
+                    }
+                });
+            });
+
+            {% if form.id.vars.value|default(false) %}
+                $('#{{ form.id.vars.id }}').trigger('change');
+            {% endif %}
+        });
+    </script>
+{%- endblock -%}

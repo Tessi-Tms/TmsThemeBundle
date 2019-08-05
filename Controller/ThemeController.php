@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Tms\Bundle\ThemeBundle\Form\ThemeOptionsType;
 use Tms\Bundle\ThemeBundle\Theme\ThemeInterface;
 
 /**
@@ -150,6 +151,27 @@ class ThemeController extends Controller
         // Return the asset
         return new Response($content, Response::HTTP_OK, array(
             'Content-Type' => $mimeType,
+        ));
+    }
+
+
+    /**
+     * @Route("/form", name="tms_theme_form")
+     *
+     * @param Request $request Instance of Request
+     * @param string  $theme   Instance of ThemeInterface
+     *
+     * @return array
+     */
+    public function formAction(Request $request, ThemeInterface $theme)
+    {
+        return $this->render('@TmsThemeBundle/Resources/views/Theme/form.html.twig', array(
+            'form' => $this->createFormBuilder()
+            ->add('options', ThemeOptionsType::class, array(
+                'theme' => $theme,
+            ))
+            ->getForm()
+            ->createView(),
         ));
     }
 }

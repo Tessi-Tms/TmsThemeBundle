@@ -8,6 +8,12 @@ services:
         tags:
             - { name: form.type }
 
+    Tms\Bundle\ThemeBundle\Form\ThemeOptionsType:
+        arguments:
+            $themeRegistry: '@Tms\Bundle\ThemeBundle\Theme\ThemeRegistry'
+        tags:
+            - { name: form.type }
+
     Tms\Bundle\ThemeBundle\Theme\ThemeManager:
         arguments:
             $themeRegistry: '@Tms\Bundle\ThemeBundle\Theme\ThemeRegistry'

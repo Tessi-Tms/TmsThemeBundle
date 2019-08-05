@@ -56,10 +56,6 @@
                     }
                 });
             });
-
-            {% if form.id.vars.value|default(false) %}
-                $('#{{ form.id.vars.id }}').trigger('change');
-            {% endif %}
         });
     </script>
 {%- endblock -%}

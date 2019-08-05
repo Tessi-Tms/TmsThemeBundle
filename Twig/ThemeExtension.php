@@ -118,15 +118,38 @@ class ThemeExtension extends \Twig_Extension
      * Retrieve a theme option.
      * Without name, it will return all the theme options.
      *
-     * @param string $name    The option name
-     * @param mixed  $default The option default value
+     * @param string $name The option name
      *
      * @return mixed
      */
-    public function themeOptions($name = null, $default = null)
+    public function themeOptions($name = null)
     {
+        // Retrieve the current theme options
         $options = $this->themeManager->getCurrentThemeOptions();
 
-        return is_null($name) ? $options : (isset($options[$name]) ? $options[$name] : $default);
+        // Remove null values
+        foreach ($options as $key => $value) {
+            if (is_null($value)) {
+                unset($options[$key]);
+            }
+        }
+
+        // merge options with default
+        $options = array_merge(
+            $this->themeManager->getCurrentTheme()->getOptions(),
+            $options
+        );
+
+        // Search for a specific option
+        if (! is_null($name)) {
+            if (!isset($options[$name])) {
+                throw new \Exception(sprintf('Unable to find the "%s" option.', $name));
+            }
+
+            return $options[$name];
+        }
+
+        // Return all options
+        return $options;
     }
 }

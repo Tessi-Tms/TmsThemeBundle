@@ -50,6 +50,16 @@ class ThemeManager
     }
 
     /**
+     * Return a specific theme.
+     *
+     * @return ThemeInterface
+     */
+    public function getTheme($id)
+    {
+        return $this->themeRegistry->getTheme($id);
+    }
+
+    /**
      * Set the current theme.
      *
      * @param mixed $theme   An instance of ThemeInterface or an identifier

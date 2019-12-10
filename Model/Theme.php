@@ -28,6 +28,13 @@ class Theme implements ThemeInterface
     protected $options;
 
     /**
+     * The theme available zones.
+     *
+     * @var array
+     */
+    protected $zones;
+
+    /**
      * The theme parent.
      *
      * @var Theme
@@ -44,6 +51,7 @@ class Theme implements ThemeInterface
         $this->id = isset($data['id']) ? $data['id'] : null;
         $this->name = isset($data['name']) ? $data['name'] : null;
         $this->options = (isset($data['options']) && is_array($data['options'])) ? $data['options'] : array();
+        $this->zones = (isset($data['zones']) && is_array($data['zones'])) ? $data['zones'] : array();
         $this->parent = (isset($data['parent']) && $data['parent'] instanceof ThemeInterface) ? $data['parent'] : null;
     }
 
@@ -102,13 +110,38 @@ class Theme implements ThemeInterface
     /**
      * Set the value of The theme options.
      *
-     * @param array options
+     * @param array $options
      *
      * @return Theme
      */
-    public function setOptions(array $value)
+    public function setOptions(array $options)
     {
-        $this->options = $value;
+        $this->options = $options;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getZones()
+    {
+        return array_unique(array_merge(
+            array('default'),
+            $this->zones
+        ));
+    }
+
+    /**
+     * Set the value of The theme zones.
+     *
+     * @param array $zones
+     *
+     * @return Theme
+     */
+    public function setZones(array $zones)
+    {
+        $this->zones = $zones;
 
         return $this;
     }

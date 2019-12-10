@@ -19,6 +19,20 @@ interface ThemeInterface
     public function getName();
 
     /**
+     * Get the value of The theme options.
+     *
+     * @return string
+     */
+    public function getOptions();
+
+    /**
+     * Get the value of The theme zones.
+     *
+     * @return string
+     */
+    public function getZones();
+
+    /**
      * Get the value of The theme parent.
      *
      * @return Theme|null

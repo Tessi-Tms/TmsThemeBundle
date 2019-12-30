@@ -62,7 +62,11 @@ class ThemeOptionsType extends AbstractType
             ->setAllowedTypes('theme', array('null', 'string', 'Tms\Bundle\ThemeBundle\Model\Theme'))
             ->setNormalizer('theme', function(Options $options, $value) {
                 if (is_string($value)) {
-                    return $this->themeRegistry->getTheme($value);
+                    try {
+                        return $this->themeRegistry->getTheme($value);
+                    } catch (\Exception $e) {
+                        return null;
+                    }
                 }
 
                 return $value;

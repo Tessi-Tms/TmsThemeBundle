@@ -54,6 +54,8 @@ class TmsThemeExtensionTest extends \PHPUnit_Framework_TestCase
                     'theme' => array(
                         'name' => 'The theme name',
                         'parent' => null,
+                        'options' => array(),
+                        'zones' => array(),
                     ),
                 ),
             ),
@@ -86,10 +88,14 @@ class TmsThemeExtensionTest extends \PHPUnit_Framework_TestCase
                     'theme' => array(
                         'name' => 'The theme name',
                         'parent' => null,
+                        'options' => array(),
+                        'zones' => array(),
                     ),
                     'subTheme' => array(
                         'name' => 'A sub theme',
                         'parent' => 'theme',
+                        'options' => array(),
+                        'zones' => array(),
                     ),
                 ),
             ),
@@ -114,10 +120,14 @@ class TmsThemeExtensionTest extends \PHPUnit_Framework_TestCase
                     'theme' => array(
                         'name' => 'The theme name',
                         'parent' => null,
+                        'options' => array(),
+                        'zones' => array(),
                     ),
                     'subTheme' => array(
                         'name' => 'A sub theme',
                         'parent' => 'theme',
+                        'options' => array(),
+                        'zones' => array(),
                     ),
                 ),
             ),
@@ -135,6 +145,8 @@ class TmsThemeExtensionTest extends \PHPUnit_Framework_TestCase
                     array(
                         'themes' => array(
                             'theme' => 'The theme name',
+                            'options' => array(),
+                            'zones' => array(),
                         ),
                     ),
                 ),
@@ -155,6 +167,8 @@ class TmsThemeExtensionTest extends \PHPUnit_Framework_TestCase
                     'theme' => array(
                         'name' => 'The theme name',
                         'parent' => null,
+                        'options' => array(),
+                        'zones' => array(),
                     ),
                 ),
             ),

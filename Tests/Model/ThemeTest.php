@@ -23,6 +23,8 @@ class ThemeTest extends AbstractModelTest
             array('id', 1234),
             array('name', 'The theme name'),
             array('parent', new Theme()),
+            array('zones', array('default')),
+            array('options', array()),
         );
     }
 }

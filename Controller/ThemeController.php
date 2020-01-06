@@ -12,7 +12,7 @@ use Tms\Bundle\ThemeBundle\Form\ThemeOptionsType;
 use Tms\Bundle\ThemeBundle\Theme\ThemeInterface;
 
 /**
- * @Route("/themes/{theme}", requirements={"theme" = "^[a-zA-Z1-9]+$"})
+ * @Route("/themes/{theme}", requirements={"theme" = "^[a-zA-Z0-9]+$"})
  * @ParamConverter("theme", converter="theme_converter")
  */
 class ThemeController extends Controller

@@ -60,13 +60,30 @@ class ThemeExtension extends \Twig_Extension
     /**
      * Transform the template name in order to retrieve parent template.
      *
-     * @param string $name The template name
+     * @param string $name    The template name
+     * @param string $themeId Identifier of the template where the function is called
      *
      * @return string
      */
-    public function templateParent($name)
+    public function templateParent($name, $themeId = null)
     {
-        return sprintf('#parent#%s', $name);
+        // Retrieve the template theme
+        $theme = null;
+        if ($themeId) {
+            $theme = $this->themeManager->getTheme($themeId);
+        }
+
+        // Get the current theme
+        $currentTheme = $this->themeManager->getCurrentTheme();
+
+        // Set the parent template name
+        do {
+            $name = sprintf('#parent#%s', $name);
+
+            $currentTheme = ($currentTheme === $theme) ? null : $currentTheme->getParent();
+        } while ($currentTheme);
+
+        return $name;
     }
 
     /**
